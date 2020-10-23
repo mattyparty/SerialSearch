@@ -1,3 +1,11 @@
 .background {
     background-color: #090909;
 }
+
+#header {
+    font-family: 'Syne Mono', monospace;
+}
+
+form {
+    font-family: 'Syne', sans-serif;
+}
