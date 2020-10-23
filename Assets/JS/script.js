@@ -47,7 +47,20 @@ function callBooks(killerName) {
       killerName +
       "+subject",
     method: "GET",
-  }).then(function (response) {});
+  }).then(function (response) {
+    $("<div>").addClass("row").attr("id", "eachBook").appendTo("#main");
+    $.response.items.length.each(function (index, element) {
+      $("<div>")
+        .addClass("col s4")
+        .attr("id", "book-card")
+        .val(element.volumeInfo.title)
+        .appendTo("#eachBook");
+      $("<img>")
+        .attr("src", element.volumeInfo.imageLinks.thumbnail)
+        .attr("alt", "Cover for " + element.volumeInfo.title)
+        .appendTo("#book-card");
+    });
+  });
 }
 
 function switchScreen() {}
