@@ -1,3 +1,25 @@
 .background {
     background-color: #090909;
 }
+
+#header {
+    font-family: 'Syne Mono', monospace;
+}
+
+form {
+    font-family: 'Syne', sans-serif;
+}
+
+#search-form label {
+    color: #000;
+}
+ 
+#search-form input[type=text]:focus + label {
+    color: #000;
+}
+
+#search-form input[type=text]:focus {
+    border-bottom: 1px solid red;
+    box-shadow: 0 1px 0 0 #000;
+}
+
