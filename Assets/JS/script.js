@@ -1,17 +1,17 @@
 //OMDB movie call
 function callMovie() {
-    //var title = "" This needs the users input before it can be implemented
+    var title = "ted+bundy";
     var queryURL = "https://www.omdbapi.com/?t=" + title + "&y=&plot=short&apikey=41a87e5";
     $.ajax({
-        url: queryURL,
-        method: "GET",
-    }).then(function(res) {
-        console.log(res)
-        var availableMovies = {};
-        for (var i = )
-        $("<div>").addClass("").attr("id", "movie-list").appendTo("#movie-div");
-        
-    })
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      console.log(response);
+      console.log(response.Title);
+      $("<div>").addClass("row").attr("id", "eachMovie").appendTo("#main");
+      $("<div>").addClass("col s4").attr("id", "movie-card").appendTo("#eachMovie");
+      $("<img>").attr("src", response.Poster).appendTo("#movie-card");
+    });
 }
 
 function returnWikiData(killername) {}
