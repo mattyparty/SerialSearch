@@ -71,7 +71,23 @@ $("#search-btn").on("click", function (event) {
 
   function callBooks() {}
 
-  function switchScreen() {}
+
+  switchScreen();
+
+  function switchScreen() {
+    $("#search-btn").on("click", function(){
+
+    $(".container").empty();
+    $("#header-img").remove();
+    $("#header").addClass("left");
+    
+    })
+
+    // $("#search-form").appendTo("#nav-search").addClass("right");
+   
+  }
+  
+  
 
   function renderResults() {}
 });
