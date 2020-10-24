@@ -17,17 +17,18 @@ function returnWikiData(killerName) {
 
 function returnWikiImage(killerName) {
   var queryURL =
-    "https://en.wikipedia.org/w/api.php?action=query&titles=" +
+    "https://commons.wikimedia.org/w/api.php?prop=pageimages|info|redirects&gsrnamespace=6&pithumbsize=250&action=query&inprop=url&redirects=&format=json&generator=search&gsrsearch=intitle:" +
     killerName +
-    "&prop=pageimages&format=json&pithumbsize=250&origin=*";
+    "&gsrlimit=5&origin=*";
+
   $.ajax({
     url: queryURL,
     method: "GET",
   }).then(function (response) {
     var responseKey = Object.keys(response.query.pages);
     var firstResponse = responseKey[0];
-
-    killerImg = response.query.pages[firstResponse].thumbnail.source;
+    //url of killer's Image
+    killerImg = response.query.pages[firstResponse].canonicalurl;
   });
 }
 function callMovie() {
@@ -55,7 +56,14 @@ $("#search-btn").on("click", function (event) {
 
   //set variable for what person the end user is searching for
   var killerSearchInput = $("#search-bar").val().trim();
-  console.log(killerSearchInput);
+  const str = killerSearchInput;
+  //Wiki doesnt like it when we dont capitlize the first word of the search this fixes that
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  const caps = str.split(" ").map(capitalize).join(" ");
+  killerSearchInput = caps;
+
   returnWikiImage(killerSearchInput);
   returnWikiData(killerSearchInput);
 
