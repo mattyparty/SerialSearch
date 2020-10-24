@@ -111,18 +111,13 @@ $("#search-btn").on("click", function (event) {
     });
   }
 
-
   switchScreen();
 
   function switchScreen() {
-    $("#search-btn").on("click", function(){
-      $(".container").empty();
+      event.preventDefault();
       $("#header-img").remove();
       $("#header").addClass("left");
-    })
-
     // $("#search-form").appendTo("#nav-search").addClass("right");
-   
   }
   
   
