@@ -44,7 +44,7 @@ function callMovie(killerName) {
       method: "GET"
     }).then(function(response) {
       console.log(response)
-      var movieRow = $("<div>").addClass("row").attr("id", "items-row");
+      var movieRow = $("<div>").addClass("row items-row");
       var responseArray = response.Search
       for (var i = 0; i < responseArray.length; i++) {
         var card = $("<div>").addClass("card");
@@ -56,7 +56,7 @@ function callMovie(killerName) {
         card.appendTo(movieRow);
         
       }
-      movieRow.appendTo(".container");
+      movieRow.appendTo("#movies");
       
     });
 }
@@ -129,7 +129,7 @@ $("#search-btn").on("click", function (event) {
           )
           .appendTo(row);
       });
-      row.appendTo(".container");
+      row.appendTo("#books");
     });
   }
 
