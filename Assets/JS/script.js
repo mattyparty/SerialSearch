@@ -49,18 +49,16 @@ function callBooks(killerName) {
     method: "GET",
   }).then(function (response) {
     console.log(response);
-    var carousel = $("<div>")
-      .addClass("carousel carousel-slider")
-      .attr("id", "book-carousel");
+    var row = $("<div>").addClass("row").attr("id", "book-row");
     var responseArray = response.items;
     console.log(responseArray);
     responseArray.forEach(function (element) {
       var publishDate = moment(element.volumeInfo.publishedDate, "YYYY-MM-DD");
       $("<div>")
-        .addClass("carousel-item")
+        .addClass("card")
         .html(
-          '<div class="card"> <div class="card-image waves-effect waves-block waves-light"> <img class="activator" src="' +
-            element.volumeInfo.imageLinks.smallThumbnail +
+          '<div class="card-image waves-effect waves-block waves-light"> <img class="activator" src="' +
+            element.volumeInfo.imageLinks.thumbnail +
             '/400/200" alt="Cover for ' +
             element.volumeInfo.title +
             '"> </div> <div class="card-reveal"> <span class=card-title grey-text text-darken-4">' +
@@ -71,22 +69,14 @@ function callBooks(killerName) {
             element.volumeInfo.publisher +
             "</h6> <h6>Date Published: " +
             publishDate.format("MMMM Do, YYYY") +
-            "</h6> </div>"
+            "</h6>"
         )
-        .appendTo(carousel);
-      //   .addClass("carousel-item")
-      //   .attr("id", "book-card")
-      //   .val(element.volumeInfo.title)
-      //   .appendTo("#eachBook");
-      // $("<img>")
-      //   .attr("src", element.volumeInfo.imageLinks.thumbnail)
-      //   .attr("alt", "Cover for " + element.volumeInfo.title)
-      // .appendTo("#book-card");
+        .appendTo(row);
     });
-    $("<div>").addClass("row").append(carousel).appendTo("#main");
+    row.appendTo(".container");
     document.addEventListener("DOMContentLoaded", function () {
-      var elems = document.querySelectorAll(".carousel");
-      var instances = M.Carousel.init(elems, options);
+      var elems = document.querySelectorAll(".row");
+      var instances = M.row.init(elems, options);
     });
   });
 }
@@ -94,4 +84,3 @@ function callBooks(killerName) {
 function switchScreen() {}
 
 function renderResults() {}
-callBooks("Ted Bundy");
