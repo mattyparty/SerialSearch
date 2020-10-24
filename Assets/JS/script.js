@@ -77,13 +77,22 @@ $("#search-btn").on("click", function (event) {
         "+subject",
       method: "GET",
     }).then(function (response) {
-      var row = $("<div>").addClass("row").attr("id", "book-row");
+      var row = $("<div>").addClass("row items-row");
       var responseArray = response.items;
-      responseArray.forEach(function (element) {
-        var publishDate = moment(
-          element.volumeInfo.publishedDate,
-          "YYYY-MM-DD"
-        );
+      console.log(responseArray);
+      responseArray.forEach(function (element, index) {
+        var cardInfo =
+          "<p>Synopsis: " + element.volumeInfo.description + "</p>";
+        if (!element.volumeInfo.description) {
+          cardInfo =
+            "<h6>Published by " +
+            element.volumeInfo.publisher +
+            " on " +
+            moment(element.volumeInfo.publishedDate, "YYYY-MM-DD").format(
+              "MMMM Do, YYYY"
+            ) +
+            "</p>";
+        }
         $("<div>")
           .addClass("card")
           .html(
@@ -91,36 +100,30 @@ $("#search-btn").on("click", function (event) {
               element.volumeInfo.imageLinks.thumbnail +
               '/400/200" alt="Cover for ' +
               element.volumeInfo.title +
-              '"> </div> <div class="card-reveal"> <span class=card-title grey-text text-darken-4">' +
+              '"> </div> <div class="card-reveal" id="book-card-' +
+              index +
+              '"> <span class=card-title grey-text text-darken-4">' +
               element.volumeInfo.title +
               '<i class="material-icons right">close</i></span> <h6>By: ' +
               element.volumeInfo.authors[0] +
-              "</h6> <h6>Publisher: " +
-              element.volumeInfo.publisher +
-              "</h6> <h6>Date Published: " +
-              publishDate.format("MMMM Do, YYYY") +
-              "</h6>"
+              "</h6>" +
+              cardInfo +
+              "</div>"
           )
           .appendTo(row);
       });
       row.appendTo(".container");
-      document.addEventListener("DOMContentLoaded", function () {
-        var elems = document.querySelectorAll(".row");
-        var instances = M.row.init(elems, options);
-      });
     });
   }
 
   switchScreen();
 
   function switchScreen() {
-      event.preventDefault();
-      $("#header-img").remove();
-      $("#header").addClass("left");
+    event.preventDefault();
+    $("#header-img").remove();
+    $("#header").addClass("left");
     // $("#search-form").appendTo("#nav-search").addClass("right");
   }
-  
-  
 
   function renderResults() {}
 });
