@@ -23,7 +23,8 @@ form {
   box-shadow: 0 1px 0 0 #000;
 }
 
-#items-row {
+
+.items-row {
   display: flex;
   flex-flow: row wrap;
   padding: 20px;

@@ -11,7 +11,9 @@ function returnWikiData(killerName) {
     var responseKey = Object.keys(response.query.pages);
     var firstResponse = responseKey[0];
     var killerBio = response.query.pages[firstResponse].extract;
+
     console.log(killerBio);
+    $("#killer-bio").append(killerBio);
   });
 }
 
@@ -28,7 +30,10 @@ function returnWikiImage(killerName) {
     var responseKey = Object.keys(response.query.pages);
     var firstResponse = responseKey[0];
     //url of killer's Image
-    killerImg = response.query.pages[firstResponse].canonicalurl;
+    killerImg = response.query.pages[firstResponse].thumbnail.source;
+    var killerHtmlTag = $("<img>");
+    killerHtmlTag.attr("src", killerImg);
+    $("#killer-bio").prepend(killerHtmlTag);
   });
 }
 function callMovie(killerName) {
@@ -70,6 +75,9 @@ $("#search-btn").on("click", function (event) {
   const caps = str.split(" ").map(capitalize).join(" ");
   killerSearchInput = caps;
 
+  ///clear elements
+  switchScreen();
+
   returnWikiImage(killerSearchInput);
   returnWikiData(killerSearchInput);
   callMovie(killerSearchInput);
@@ -84,13 +92,24 @@ $("#search-btn").on("click", function (event) {
         "+subject",
       method: "GET",
     }).then(function (response) {
-      var row = $("<div>").addClass("row").attr("id", "items-row");
+
+      var row = $("<div>").addClass("row items-row");
+
       var responseArray = response.items;
-      responseArray.forEach(function (element) {
-        var publishDate = moment(
-          element.volumeInfo.publishedDate,
-          "YYYY-MM-DD"
-        );
+      console.log(responseArray);
+      responseArray.forEach(function (element, index) {
+        var cardInfo =
+          "<p>Synopsis: " + element.volumeInfo.description + "</p>";
+        if (!element.volumeInfo.description) {
+          cardInfo =
+            "<h6>Published by " +
+            element.volumeInfo.publisher +
+            " on " +
+            moment(element.volumeInfo.publishedDate, "YYYY-MM-DD").format(
+              "MMMM Do, YYYY"
+            ) +
+            "</p>";
+        }
         $("<div>")
           .addClass("card")
           .html(
@@ -98,41 +117,33 @@ $("#search-btn").on("click", function (event) {
               element.volumeInfo.imageLinks.thumbnail +
               '/400/200" alt="Cover for ' +
               element.volumeInfo.title +
-              '"> </div> <div class="card-reveal"> <span class=card-title grey-text text-darken-4">' +
+              '"> </div> <div class="card-reveal" id="book-card-' +
+              index +
+              '"> <span class=card-title grey-text text-darken-4">' +
               element.volumeInfo.title +
               '<i class="material-icons right">close</i></span> <h6>By: ' +
               element.volumeInfo.authors[0] +
-              "</h6> <h6>Publisher: " +
-              element.volumeInfo.publisher +
-              "</h6> <h6>Date Published: " +
-              publishDate.format("MMMM Do, YYYY") +
-              "</h6>"
+              "</h6>" +
+              cardInfo +
+              "</div>"
           )
           .appendTo(row);
       });
       row.appendTo(".container");
-      document.addEventListener("DOMContentLoaded", function () {
-        var elems = document.querySelectorAll(".row");
-        var instances = M.row.init(elems, options);
-      });
     });
   }
 
 
+ 
+
   switchScreen();
 
   function switchScreen() {
-    $("#search-btn").on("click", function(){
-      $(".container").empty();
-      $("#header-img").remove();
-      $("#header").addClass("left");
-    })
+    event.preventDefault();
+    $("#header-img").remove();
+    $("#header").addClass("left");
 
-    // $("#search-form").appendTo("#nav-search").addClass("right");
-   
   }
-  
-  
 
   function renderResults() {}
 });
