@@ -76,11 +76,9 @@ $("#search-btn").on("click", function (event) {
 
   function switchScreen() {
     $("#search-btn").on("click", function(){
-
-    $(".container").empty();
-    $("#header-img").remove();
-    $("#header").addClass("left");
-    
+      $(".container").empty();
+      $("#header-img").remove();
+      $("#header").addClass("left");
     })
 
     // $("#search-form").appendTo("#nav-search").addClass("right");
