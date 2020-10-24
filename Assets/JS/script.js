@@ -1,20 +1,19 @@
-//OMDB movie call
-// function callMovie() {
-//     //var title = "" This needs the users input before it can be implemented
-//     var queryURL = "https://www.omdbapi.com/?t=" + title + "&y=&plot=short&apikey=41a87e5";
-//     $.ajax({
-//         url: queryURL,
-//         method: "GET",
-//     }).then(function(res) {
-//         console.log(res)
-//         var availableMovies = {};
-//         for (var i = )
-//         $("<div>").addClass("").attr("id", "movie-list").appendTo("#movie-div");
+function returnWikiData(killerName) {
+  var queryURL =
+    "https://en.wikipedia.org/w/api.php?action=query&titles=" +
+    killerName +
+    "&prop=extracts&format=json&exintro=1&origin=*";
 
-//     })
-// }
-
-function returnWikiData(killerName) {}
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (response) {
+    var responseKey = Object.keys(response.query.pages);
+    var firstResponse = responseKey[0];
+    var killerBio = response.query.pages[firstResponse].extract;
+    console.log(killerBio);
+  });
+}
 
 function returnWikiImage(killerName) {
   var queryURL =
@@ -29,7 +28,6 @@ function returnWikiImage(killerName) {
     var firstResponse = responseKey[0];
 
     killerImg = response.query.pages[firstResponse].thumbnail.source;
-    console.log(killerImg);
   });
 }
 function callMovie() {
@@ -51,13 +49,21 @@ function callMovie() {
   });
 }
 
-returnWikiImage("Ted Bundy");
-/////"https://en.wikipedia.org/w/api.php?action=query&titles=Ted Bundy&prop=extracts&format=json&exintro=1&origin=*";}
+//On Buttion Click to run search functions
+$("#search-btn").on("click", function (event) {
+  event.preventDefault();
 
-function callTv() {}
+  //set variable for what person the end user is searching for
+  var killerSearchInput = $("#search-bar").val().trim();
+  console.log(killerSearchInput);
+  returnWikiImage(killerSearchInput);
+  returnWikiData(killerSearchInput);
 
-function callBooks() {}
+  function callTv() {}
 
-function switchScreen() {}
+  function callBooks() {}
 
-function renderResults() {}
+  function switchScreen() {}
+
+  function renderResults() {}
+});
