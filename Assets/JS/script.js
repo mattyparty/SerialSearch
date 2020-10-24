@@ -1,35 +1,34 @@
-//OMDB movie call
-// function callMovie() {
-//     //var title = "" This needs the users input before it can be implemented
-//     var queryURL = "https://www.omdbapi.com/?t=" + title + "&y=&plot=short&apikey=41a87e5";
-//     $.ajax({
-//         url: queryURL,
-//         method: "GET",
-//     }).then(function(res) {
-//         console.log(res)
-//         var availableMovies = {};
-//         for (var i = )
-//         $("<div>").addClass("").attr("id", "movie-list").appendTo("#movie-div");
-
-//     })
-// }
-
-function returnWikiData(killerName) {}
-
-function returnWikiImage(killerName) {
+function returnWikiData(killerName) {
   var queryURL =
     "https://en.wikipedia.org/w/api.php?action=query&titles=" +
     killerName +
-    "&prop=pageimages&format=json&pithumbsize=250&origin=*";
+    "&prop=extracts&format=json&exintro=1&origin=*";
+
   $.ajax({
     url: queryURL,
     method: "GET",
   }).then(function (response) {
     var responseKey = Object.keys(response.query.pages);
     var firstResponse = responseKey[0];
+    var killerBio = response.query.pages[firstResponse].extract;
+    console.log(killerBio);
+  });
+}
 
-    killerImg = response.query.pages[firstResponse].thumbnail.source;
-    console.log(killerImg);
+function returnWikiImage(killerName) {
+  var queryURL =
+    "https://commons.wikimedia.org/w/api.php?prop=pageimages|info|redirects&gsrnamespace=6&pithumbsize=250&action=query&inprop=url&redirects=&format=json&generator=search&gsrsearch=intitle:" +
+    killerName +
+    "&gsrlimit=5&origin=*";
+
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (response) {
+    var responseKey = Object.keys(response.query.pages);
+    var firstResponse = responseKey[0];
+    //url of killer's Image
+    killerImg = response.query.pages[firstResponse].canonicalurl;
   });
 }
 function callMovie() {
@@ -51,13 +50,28 @@ function callMovie() {
   });
 }
 
-returnWikiImage("Ted Bundy");
-/////"https://en.wikipedia.org/w/api.php?action=query&titles=Ted Bundy&prop=extracts&format=json&exintro=1&origin=*";}
+//On Buttion Click to run search functions
+$("#search-btn").on("click", function (event) {
+  event.preventDefault();
 
-function callTv() {}
+  //set variable for what person the end user is searching for
+  var killerSearchInput = $("#search-bar").val().trim();
+  const str = killerSearchInput;
+  //Wiki doesnt like it when we dont capitlize the first word of the search this fixes that
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  const caps = str.split(" ").map(capitalize).join(" ");
+  killerSearchInput = caps;
 
-function callBooks() {}
+  returnWikiImage(killerSearchInput);
+  returnWikiData(killerSearchInput);
 
-function switchScreen() {}
+  function callTv() {}
 
-function renderResults() {}
+  function callBooks() {}
+
+  function switchScreen() {}
+
+  function renderResults() {}
+});
