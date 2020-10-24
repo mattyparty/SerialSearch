@@ -31,23 +31,29 @@ function returnWikiImage(killerName) {
     killerImg = response.query.pages[firstResponse].canonicalurl;
   });
 }
-function callMovie() {
-  var title = "ted+bundy";
+function callMovie(killerName) {
   var queryURL =
-    "https://www.omdbapi.com/?t=" + title + "&y=&plot=short&apikey=41a87e5";
-  $.ajax({
-    url: queryURL,
-    method: "GET",
-  }).then(function (response) {
-    console.log(response);
-    console.log(response.Title);
-    $("<div>").addClass("row").attr("id", "eachMovie").appendTo("#main");
-    $("<div>")
-      .addClass("col s4")
-      .attr("id", "movie-card")
-      .appendTo("#eachMovie");
-    $("<img>").attr("src", response.Poster).appendTo("#movie-card");
-  });
+    "https://www.omdbapi.com/?t=" + killerName + "&y=&plot=short&apikey=41a87e5";
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      console.log(response)
+      var movieRow = $("<div>").addClass("row").attr("id", "items-row");
+      var responseArray = response.Search
+      for (var i = 0; i < responseArray.length; i++) {
+        var card = $("<div>").addClass("card");
+        var img = $("<img>").addClass("card-image waves-effect waves-block waves-light activator").attr("src", responseArray[i].Poster).css({'width' : '400px' , 'height' : '200px'}).attr("alt", responseArray[i].title);
+        if (responseArray[i].Poster === "N/A") {
+          img.attr("src", "./assets/images/2297419_orig.jpg");
+        }
+        img.appendTo(card);
+        card.appendTo(movieRow);
+        
+      }
+      movieRow.appendTo(".container");
+      
+    });
 }
 
 //On Buttion Click to run search functions
@@ -66,6 +72,7 @@ $("#search-btn").on("click", function (event) {
 
   returnWikiImage(killerSearchInput);
   returnWikiData(killerSearchInput);
+  callMovie(killerSearchInput);
 
   function callTv() {}
 
@@ -77,7 +84,7 @@ $("#search-btn").on("click", function (event) {
         "+subject",
       method: "GET",
     }).then(function (response) {
-      var row = $("<div>").addClass("row").attr("id", "book-row");
+      var row = $("<div>").addClass("row").attr("id", "items-row");
       var responseArray = response.items;
       responseArray.forEach(function (element) {
         var publishDate = moment(
