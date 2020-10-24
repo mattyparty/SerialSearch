@@ -69,7 +69,47 @@ $("#search-btn").on("click", function (event) {
 
   function callTv() {}
 
-  function callBooks() {}
+  function callBooks(killerName) {
+    $.ajax({
+      url:
+        "https://www.googleapis.com/books/v1/volumes?q=" +
+        killerName +
+        "+subject",
+      method: "GET",
+    }).then(function (response) {
+      var row = $("<div>").addClass("row").attr("id", "book-row");
+      var responseArray = response.items;
+      responseArray.forEach(function (element) {
+        var publishDate = moment(
+          element.volumeInfo.publishedDate,
+          "YYYY-MM-DD"
+        );
+        $("<div>")
+          .addClass("card")
+          .html(
+            '<div class="card-image waves-effect waves-block waves-light"> <img class="activator" src="' +
+              element.volumeInfo.imageLinks.thumbnail +
+              '/400/200" alt="Cover for ' +
+              element.volumeInfo.title +
+              '"> </div> <div class="card-reveal"> <span class=card-title grey-text text-darken-4">' +
+              element.volumeInfo.title +
+              '<i class="material-icons right">close</i></span> <h6>By: ' +
+              element.volumeInfo.authors[0] +
+              "</h6> <h6>Publisher: " +
+              element.volumeInfo.publisher +
+              "</h6> <h6>Date Published: " +
+              publishDate.format("MMMM Do, YYYY") +
+              "</h6>"
+          )
+          .appendTo(row);
+      });
+      row.appendTo(".container");
+      document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll(".row");
+        var instances = M.row.init(elems, options);
+      });
+    });
+  }
 
   function switchScreen() {}
 
