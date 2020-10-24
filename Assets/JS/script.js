@@ -11,7 +11,9 @@ function returnWikiData(killerName) {
     var responseKey = Object.keys(response.query.pages);
     var firstResponse = responseKey[0];
     var killerBio = response.query.pages[firstResponse].extract;
+
     console.log(killerBio);
+    $("#killer-bio").append(killerBio);
   });
 }
 
@@ -28,7 +30,10 @@ function returnWikiImage(killerName) {
     var responseKey = Object.keys(response.query.pages);
     var firstResponse = responseKey[0];
     //url of killer's Image
-    killerImg = response.query.pages[firstResponse].canonicalurl;
+    killerImg = response.query.pages[firstResponse].thumbnail.source;
+    var killerHtmlTag = $("<img>");
+    killerHtmlTag.attr("src", killerImg);
+    $("#killer-bio").prepend(killerHtmlTag);
   });
 }
 function callMovie() {
@@ -63,6 +68,9 @@ $("#search-btn").on("click", function (event) {
   }
   const caps = str.split(" ").map(capitalize).join(" ");
   killerSearchInput = caps;
+
+  ///clear elements
+  switchScreen();
 
   returnWikiImage(killerSearchInput);
   returnWikiData(killerSearchInput);
@@ -111,21 +119,12 @@ $("#search-btn").on("click", function (event) {
     });
   }
 
-
-  switchScreen();
-
+  //clear html elements so that search can render the results
   function switchScreen() {
-    $("#search-btn").on("click", function(){
-      $(".container").empty();
-      $("#header-img").remove();
-      $("#header").addClass("left");
-    })
-
-    // $("#search-form").appendTo("#nav-search").addClass("right");
-   
+    // $(".container").empty();
+    $("#header-img").remove();
+    $("#header").addClass("left");
   }
-  
-  
 
   function renderResults() {}
 });
