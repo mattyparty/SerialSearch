@@ -48,11 +48,11 @@ function callMovie(killerName) {
     for (var i = 0; i < responseArray.length; i++) {
       var card = $("<div>").addClass("card");
       var imageDiv = $("<div>").addClass(
-        "card-image waves-effect waves-block waves-light"
+        "card-image poster waves-effect waves-block waves-light"
       );
       var img = $("<img>")
         .addClass("activator")
-        .attr("src", responseArray[i].Poster + "/400/200")
+        .attr("src", responseArray[i].Poster + "")
         .attr("alt", responseArray[i].Title);
       if (responseArray[i].Poster === "N/A") {
         img.attr("src", "./assets/images/2297419_orig.jpg");
@@ -103,7 +103,7 @@ function callBooks(killerName) {
       $("<div>")
         .addClass("card")
         .html(
-          '<div class="card-image waves-effect waves-block waves-light"> <img class="activator" src="' +
+          '<div class="poster card-image waves-effect waves-block waves-light"> <img class="activator" src="' +
             element.volumeInfo.imageLinks.thumbnail +
             '/400/200" alt="Cover for ' +
             element.volumeInfo.title +
@@ -129,7 +129,48 @@ function switchScreen() {
   $("#header").addClass("left");
 }
 
-function callTv() {}
+function callTv(killerName) {
+  var queryURL =
+    "https://www.omdbapi.com/?s=" +
+    killerName +
+    "&y=&type=series&apikey=41a87e5";
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (data) {
+    console.log(data);
+    var seriesRow = $("<div>").addClass("row items-row");
+    var responseArray = data.Search;
+    for (var i = 0; i < responseArray.length; i++) {
+      var card = $("<div>").addClass("card");
+      var imageDiv = $("<div>").addClass(
+        "poster card-image waves-effect waves-block waves-light"
+      );
+      var img = $("<img>")
+        .addClass("activator")
+        .attr("src", responseArray[i].Poster + "/400/200")
+        .attr("alt", responseArray[i].Title);
+      if (responseArray[i].Poster === "N/A") {
+        img.attr("src", "./assets/images/2297419_orig.jpg");
+      }
+      var cardReveal = $("<div>")
+        .addClass("card-reveal")
+        .attr("id", "movie-reveal-" + i);
+      var cardTitle = $("<span>")
+        .addClass("card-title grey-text text-darken-4")
+        .text("" + responseArray[i].Title);
+      $("<i>")
+        .addClass("material-icons right")
+        .text("close")
+        .appendTo(cardTitle);
+      cardTitle.appendTo(cardReveal);
+      imageDiv.append(img).appendTo(card);
+      cardReveal.appendTo(card);
+      card.appendTo(seriesRow);
+    }
+    movieRow.appendTo("#tv");
+  });
+}
 
 //On Buttion Click to run search functions
 $("#search-btn").on("click", function (event) {
