@@ -149,17 +149,31 @@ $("#search-btn").on("click", function (event) {
   killerSearchInput = caps;
 
   ///clear elements
-  switchScreen();
-
-  returnWikiImage(killerSearchInput);
-  returnWikiData(killerSearchInput);
-  if ($("#movie-check").prop("checked")) {
-    callMovie(killerSearchInput);
-  }
-  if ($("#book-check").prop("checked")) {
-    callBooks(killerSearchInput);
-  }
-  if ($("#tv-check").prop("checked")) {
-    callTv(killerSearchInput);
+  if (
+    $("#movie-check").prop("checked") ||
+    $("#book-check").prop("checked") ||
+    $("#tv-check").prop("checked")
+  ) {
+    switchScreen();
+    returnWikiImage(killerSearchInput);
+    returnWikiData(killerSearchInput);
+    if ($("#movie-check").prop("checked")) {
+      callMovie(killerSearchInput);
+    }
+    if ($("#book-check").prop("checked")) {
+      callBooks(killerSearchInput);
+    }
+    if ($("#tv-check").prop("checked")) {
+      callTv(killerSearchInput);
+    }
+  } else {
+    $("<div>")
+      .addClass("modal")
+      .attr("id", "modal1")
+      .html(
+        `<div class="modal-content"> <h5>Oh no!</h5> <p>You're killing me! You have to check at least one category!</p> </div> <div class="modal-footer"> <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a> </div>`
+      )
+      .appendTo(".container");
+    $("#\\#modal1").modal("show");
   }
 });
