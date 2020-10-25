@@ -38,28 +38,101 @@ function returnWikiImage(killerName) {
 }
 function callMovie(killerName) {
   var queryURL =
-    "https://www.omdbapi.com/?t=" + killerName + "&y=&plot=short&apikey=41a87e5";
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    }).then(function(response) {
-      console.log(response)
-      var movieRow = $("<div>").addClass("row items-row");
-      var responseArray = response.Search
-      for (var i = 0; i < responseArray.length; i++) {
-        var card = $("<div>").addClass("card");
-        var img = $("<img>").addClass("card-image waves-effect waves-block waves-light activator").attr("src", responseArray[i].Poster).css({'width' : '400px' , 'height' : '200px'}).attr("alt", responseArray[i].title);
-        if (responseArray[i].Poster === "N/A") {
-          img.attr("src", "./assets/images/2297419_orig.jpg");
-        }
-        img.appendTo(card);
-        card.appendTo(movieRow);
-        
+    "https://www.omdbapi.com/?s=" +
+    killerName +
+    "&y=&type=movie&apikey=41a87e5";
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (data) {
+    console.log(data);
+    var movieRow = $("<div>").addClass("row items-row");
+    var responseArray = data.Search;
+    for (var i = 0; i < responseArray.length; i++) {
+      var card = $("<div>").addClass("card");
+      var imageDiv = $("<div>").addClass(
+        "card-image waves-effect waves-block waves-light"
+      );
+      var img = $("<img>")
+        .addClass("activator")
+        .attr("src", responseArray[i].Poster + "/400/200")
+        .attr("alt", responseArray[i].Title);
+      if (responseArray[i].Poster === "N/A") {
+        img.attr("src", "./assets/images/2297419_orig.jpg");
       }
-      movieRow.appendTo("#movies");
-      
-    });
+      var cardReveal = $("<div>")
+        .addClass("card-reveal")
+        .attr("id", "movie-reveal-" + i);
+      var cardTitle = $("<span>")
+        .addClass("card-title grey-text text-darken-4")
+        .text("" + responseArray[i].Title);
+      $("<i>")
+        .addClass("material-icons right")
+        .text("close")
+        .appendTo(cardTitle);
+      cardTitle.appendTo(cardReveal);
+      imageDiv.append(img).appendTo(card);
+      cardReveal.appendTo(card);
+      card.appendTo(movieRow);
+    }
+    movieRow.appendTo("#movies");
+  });
 }
+
+function callBooks(killerName) {
+  $.ajax({
+    url:
+      "https://www.googleapis.com/books/v1/volumes?q=" +
+      killerName +
+      "+subject",
+    method: "GET",
+  }).then(function (response) {
+    var row = $("<div>").addClass("row items-row");
+    var responseArray = response.items;
+    console.log(responseArray);
+    responseArray.forEach(function (element, index) {
+      var cardInfo = "<p>Synopsis: " + element.volumeInfo.description + "</p>";
+      // If no synopsis is provided, we just list the publisher info
+      if (!element.volumeInfo.description) {
+        cardInfo =
+          "<h6>Published by " +
+          element.volumeInfo.publisher +
+          " on " +
+          moment(element.volumeInfo.publishedDate, "YYYY-MM-DD").format(
+            "MMMM Do, YYYY"
+          ) +
+          "</p>";
+      }
+      $("<div>")
+        .addClass("card")
+        .html(
+          '<div class="card-image waves-effect waves-block waves-light"> <img class="activator" src="' +
+            element.volumeInfo.imageLinks.thumbnail +
+            '/400/200" alt="Cover for ' +
+            element.volumeInfo.title +
+            '"> </div> <div class="card-reveal" id="book-reveal-' +
+            index +
+            '"> <span class=card-title grey-text text-darken-4">' +
+            element.volumeInfo.title +
+            '<i class="material-icons right">close</i></span> <h6>By: ' +
+            element.volumeInfo.authors[0] +
+            "</h6>" +
+            cardInfo +
+            "</div>"
+        )
+        .appendTo(row);
+    });
+    row.appendTo("#books");
+  });
+}
+
+function switchScreen() {
+  event.preventDefault();
+  $("#header-img").remove();
+  $("#header").addClass("left");
+}
+
+function callTv() {}
 
 //On Buttion Click to run search functions
 $("#search-btn").on("click", function (event) {
@@ -80,70 +153,13 @@ $("#search-btn").on("click", function (event) {
 
   returnWikiImage(killerSearchInput);
   returnWikiData(killerSearchInput);
-  callMovie(killerSearchInput);
-
-  function callTv() {}
-
-  function callBooks(killerName) {
-    $.ajax({
-      url:
-        "https://www.googleapis.com/books/v1/volumes?q=" +
-        killerName +
-        "+subject",
-      method: "GET",
-    }).then(function (response) {
-
-      var row = $("<div>").addClass("row items-row");
-
-      var responseArray = response.items;
-      console.log(responseArray);
-      responseArray.forEach(function (element, index) {
-        var cardInfo =
-          "<p>Synopsis: " + element.volumeInfo.description + "</p>";
-        if (!element.volumeInfo.description) {
-          cardInfo =
-            "<h6>Published by " +
-            element.volumeInfo.publisher +
-            " on " +
-            moment(element.volumeInfo.publishedDate, "YYYY-MM-DD").format(
-              "MMMM Do, YYYY"
-            ) +
-            "</p>";
-        }
-        $("<div>")
-          .addClass("card")
-          .html(
-            '<div class="card-image waves-effect waves-block waves-light"> <img class="activator" src="' +
-              element.volumeInfo.imageLinks.thumbnail +
-              '/400/200" alt="Cover for ' +
-              element.volumeInfo.title +
-              '"> </div> <div class="card-reveal" id="book-card-' +
-              index +
-              '"> <span class=card-title grey-text text-darken-4">' +
-              element.volumeInfo.title +
-              '<i class="material-icons right">close</i></span> <h6>By: ' +
-              element.volumeInfo.authors[0] +
-              "</h6>" +
-              cardInfo +
-              "</div>"
-          )
-          .appendTo(row);
-      });
-      row.appendTo("#books");
-    });
+  if ($("#movie-check").prop("checked")) {
+    callMovie(killerSearchInput);
   }
-
-
- 
-
-  switchScreen();
-
-  function switchScreen() {
-    event.preventDefault();
-    $("#header-img").remove();
-    $("#header").addClass("left");
-
+  if ($("#book-check").prop("checked")) {
+    callBooks(killerSearchInput);
   }
-
-  function renderResults() {}
+  if ($("#tv-check").prop("checked")) {
+    callTv(killerSearchInput);
+  }
 });
