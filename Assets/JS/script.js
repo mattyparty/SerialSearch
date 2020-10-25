@@ -11,8 +11,6 @@ function returnWikiData(killerName) {
     var responseKey = Object.keys(response.query.pages);
     var firstResponse = responseKey[0];
     var killerBio = response.query.pages[firstResponse].extract;
-
-    console.log(killerBio);
     $("#killer-bio").append(killerBio);
   });
 }
@@ -45,7 +43,6 @@ function callMovie(killerName) {
     url: queryURL,
     method: "GET",
   }).then(function (data) {
-    console.log(data);
     var movieRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
     for (var i = 0; i < responseArray.length; i++) {
@@ -150,10 +147,12 @@ $("#search-btn").on("click", function (event) {
 
   ///clear elements
   if (
-    $("#movie-check").prop("checked") ||
-    $("#book-check").prop("checked") ||
-    $("#tv-check").prop("checked")
+    ($("#movie-check").prop("checked") ||
+      $("#book-check").prop("checked") ||
+      $("#tv-check").prop("checked")) &&
+    killerSearchInput !== ""
   ) {
+    console.log($("search-bar").val);
     switchScreen();
     returnWikiImage(killerSearchInput);
     returnWikiData(killerSearchInput);
@@ -171,9 +170,12 @@ $("#search-btn").on("click", function (event) {
       .addClass("modal")
       .attr("id", "modal1")
       .html(
-        `<div class="modal-content"> <h5>Oh no!</h5> <p>You're killing me! You have to check at least one category!</p> </div> <div class="modal-footer"> <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a> </div>`
+        `<div class="modal-content"> <h5>You're killing me!</h5> <p>What are we even doing if you're not going to search for something?!</p> </div> <div class="modal-footer"> <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a> </div>`
       )
       .appendTo(".container");
-    $("#\\#modal1").modal("show");
+    // Got the following solution for making the modal appear from https://stackoverflow.com/questions/40430576/how-i-can-open-a-materialize-modal-when-a-window-is-ready. I wish I understood most of it.
+    const modalVar = document.getElementById("modal1");
+    const instance = M.Modal.init(modalVar, { dismissible: false });
+    instance.open();
   }
 });
