@@ -12,7 +12,6 @@ function returnWikiData(killerName) {
     var firstResponse = responseKey[0];
     var killerBio = response.query.pages[firstResponse].extract;
 
-    console.log(killerBio);
     $("#killer-bio").append(killerBio);
   });
 }
@@ -33,7 +32,7 @@ function returnWikiImage(killerName) {
     killerImg = response.query.pages[firstResponse].thumbnail.source;
     var killerHtmlTag = $("<img>");
     killerHtmlTag.attr("src", killerImg);
-    $("#killer-bio").prepend(killerHtmlTag);
+    $("#killer-img").prepend(killerHtmlTag);
   });
 }
 function callMovie(killerName) {
@@ -130,6 +129,8 @@ function switchScreen() {
   event.preventDefault();
   $("#header-img").remove();
   $("#header").addClass("left");
+  $("#killer-img").empty();
+  $("#killer-bio").empty();
 }
 
 function callTv(killerName) {
