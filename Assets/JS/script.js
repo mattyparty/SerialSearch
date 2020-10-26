@@ -48,18 +48,15 @@ function returnWikiImage(killerName) {
     var newFav = alreadyFavorite(favoriteKillers);
     if (newFav) {
       favoriteKillers.push({ name: killerName, image: killerImg });
-      $("<form>")
-        .attr("id", "fav-form")
+      $("#fav-form")
         .html(
-          '<p> <button> <input type="checkbox" /> <span>Favorite</span> </button> </p>'
+          '<p> <button type="submit"> <input type="checkbox" /> <span>Favorite</span> </button> </p>'
         )
         .prependTo("#killer-bio");
     } else {
-      $("<form>")
-        .attr("id", "fav-form")
-        .html(
-          '<p> <button> <input type="checkbox" checked="checked" /> <span>Favorite</span> </button> </p>'
-        );
+      $("#fav-form").html(
+        '<p> <button type="submit"> <input type="checkbox" checked="checked" /> <span>Favorite</span> </button> </p>'
+      );
       preppendTo("#killer-bio");
     }
     $("#killer-bio").prepend(killerHtmlTag);
@@ -185,7 +182,7 @@ function callTv(killerName) {
       }
       var cardReveal = $("<div>")
         .addClass("card-reveal")
-        .attr("id", "movie-reveal-" + i);
+        .attr("id", "tv-reveal-" + i);
       var cardTitle = $("<span>")
         .addClass("card-title grey-text text-darken-4")
         .text("" + responseArray[i].Title);
@@ -198,15 +195,18 @@ function callTv(killerName) {
       cardReveal.appendTo(card);
       card.appendTo(seriesRow);
     }
-    movieRow.appendTo("#tv");
+    seriesRow.appendTo("#tv");
   });
 }
 var favoriteKillers;
-localStorage.getItem("Killers", favoriteKillers);
-if (favoriteKillers) {
-  var favoriteKillers = JSON.parse(favoriteKillers);
+var killerString = localStorage.getItem("Killers");
+if (killerString) {
+  var favoriteKillers = JSON.parse(killerString);
+  $("<h5>").text("Favorites:").appendTo("#favorites");
   favoriteKillers.forEach(function (element) {
-    var favCard = $("<div>").addClass("card killer-card").val(element.name);
+    var favCard = $("<div>")
+      .addClass("card waves-effect waves-light z-depth-4 killer-card")
+      .val(element.name);
     $("<img>")
       .attr("src", element.image)
       .attr("alt", "Image of " + element.name)
@@ -264,4 +264,9 @@ $("#search-btn").on("click", function (event) {
     const instance = M.Modal.init(modalVar, { dismissible: false });
     instance.open();
   }
+});
+$("#fav-form").on("submit", function (event) {
+  event.preventDefault();
+  var saveInput = JSON.stringify(favoriteKillers);
+  localStorage.setItem("Killers", saveInput);
 });
