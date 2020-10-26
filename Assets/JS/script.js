@@ -12,7 +12,6 @@ function returnWikiData(killerName) {
     var firstResponse = responseKey[0];
     var killerBio = response.query.pages[firstResponse].extract;
     $("#killer-bio").append(killerBio);
-    console.log(firstResponse);
   });
 }
 
@@ -32,8 +31,38 @@ function returnWikiImage(killerName) {
     killerImg = response.query.pages[firstResponse].thumbnail.source;
     var killerHtmlTag = $("<img>");
     killerHtmlTag.attr("src", killerImg);
+    // var favForm = $("<form>")
+    //   .attr("id", "fav-form")
+    //   .html(
+    //     '<p> <button> <input type="checkbox" class="star_border" /> <span>Favorite</span> </button> </p>'
+    //   );
+
+    function alreadyFavorite(favArray) {
+      favArray.forEach(function (element) {
+        if (element.name === killerName) {
+          return false;
+        }
+      });
+      return true;
+    }
+    var newFav = alreadyFavorite(favoriteKillers);
+    if (newFav) {
+      favoriteKillers.push({ name: killerName, image: killerImg });
+      $("<form>")
+        .attr("id", "fav-form")
+        .html(
+          '<p> <button> <input type="checkbox" /> <span>Favorite</span> </button> </p>'
+        )
+        .prependTo("#killer-bio");
+    } else {
+      $("<form>")
+        .attr("id", "fav-form")
+        .html(
+          '<p> <button> <input type="checkbox" checked="checked" /> <span>Favorite</span> </button> </p>'
+        );
+      preppendTo("#killer-bio");
+    }
     $("#killer-bio").prepend(killerHtmlTag);
-    favoriteKillers.push({ name: killerName, image: killerImg });
   });
 }
 function callMovie(killerName) {
@@ -88,7 +117,6 @@ function callBooks(killerName) {
   }).then(function (response) {
     var row = $("<div>").addClass("row items-row");
     var responseArray = response.items;
-    console.log(responseArray);
     responseArray.forEach(function (element, index) {
       var cardInfo = "<p>Synopsis: " + element.volumeInfo.description + "</p>";
       // If no synopsis is provided, we just list the publisher info
@@ -141,7 +169,6 @@ function callTv(killerName) {
     url: queryURL,
     method: "GET",
   }).then(function (data) {
-    console.log(data);
     var seriesRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
     for (var i = 0; i < responseArray.length; i++) {
@@ -176,8 +203,8 @@ function callTv(killerName) {
 }
 var favoriteKillers;
 localStorage.getItem("Killers", favoriteKillers);
-var favoriteKillers = JSON.parse(favoriteKillers);
 if (favoriteKillers) {
+  var favoriteKillers = JSON.parse(favoriteKillers);
   favoriteKillers.forEach(function (element) {
     var favCard = $("<div>").addClass("card killer-card").val(element.name);
     $("<img>")
@@ -212,7 +239,6 @@ $("#search-btn").on("click", function (event) {
       $("#tv-check").prop("checked")) &&
     killerSearchInput !== ""
   ) {
-    console.log($("search-bar").val);
     switchScreen();
     returnWikiImage(killerSearchInput);
     returnWikiData(killerSearchInput);
