@@ -12,6 +12,7 @@ function returnWikiData(killerName) {
     var firstResponse = responseKey[0];
     var killerBio = response.query.pages[firstResponse].extract;
     $("#killer-bio").append(killerBio);
+    console.log(firstResponse);
   });
 }
 
@@ -32,6 +33,7 @@ function returnWikiImage(killerName) {
     var killerHtmlTag = $("<img>");
     killerHtmlTag.attr("src", killerImg);
     $("#killer-bio").prepend(killerHtmlTag);
+    favoriteKillers.push({ name: killerName, image: killerImg });
   });
 }
 function callMovie(killerName) {
@@ -126,6 +128,7 @@ function callBooks(killerName) {
 function switchScreen() {
   event.preventDefault();
   $("#header-img").remove();
+  $("#favorites").remove();
   $("#header").addClass("left");
 }
 
@@ -171,7 +174,23 @@ function callTv(killerName) {
     movieRow.appendTo("#tv");
   });
 }
-
+var favoriteKillers;
+localStorage.getItem("Killers", favoriteKillers);
+var favoriteKillers = JSON.parse(favoriteKillers);
+if (favoriteKillers) {
+  favoriteKillers.forEach(function (element) {
+    var favCard = $("<div>").addClass("card killer-card").val(element.name);
+    $("<img>")
+      .attr("src", element.image)
+      .attr("alt", "Image of " + element.name)
+      .appendTo(favCard);
+    $("<h6>").text(element.name).appendTo(favCard);
+    favCard.appendTo("#favorites");
+  });
+  // This else turns it into an empty array so that it can be pushed to in returnWikiImage
+} else {
+  favoriteKillers = [];
+}
 //On Buttion Click to run search functions
 $("#search-btn").on("click", function (event) {
   event.preventDefault();

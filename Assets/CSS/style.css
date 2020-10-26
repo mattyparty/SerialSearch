@@ -43,3 +43,7 @@ form {
   min-width: 150px;
   border-radius: 2px;
 }
+
+#favorites .card {
+  border: 1px solid red;
+}
