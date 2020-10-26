@@ -44,7 +44,6 @@ function callMovie(killerName) {
     url: queryURL,
     method: "GET",
   }).then(function (data) {
-    console.log(data);
     var movieRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
     for (var i = 0; i < responseArray.length; i++) {
@@ -191,17 +190,36 @@ $("#search-btn").on("click", function (event) {
   killerSearchInput = caps;
 
   ///clear elements
-  switchScreen();
-
-  returnWikiImage(killerSearchInput);
-  returnWikiData(killerSearchInput);
-  if ($("#movie-check").prop("checked")) {
-    callMovie(killerSearchInput);
-  }
-  if ($("#book-check").prop("checked")) {
-    callBooks(killerSearchInput);
-  }
-  if ($("#tv-check").prop("checked")) {
-    callTv(killerSearchInput);
+  if (
+    ($("#movie-check").prop("checked") ||
+      $("#book-check").prop("checked") ||
+      $("#tv-check").prop("checked")) &&
+    killerSearchInput !== ""
+  ) {
+    console.log($("search-bar").val);
+    switchScreen();
+    returnWikiImage(killerSearchInput);
+    returnWikiData(killerSearchInput);
+    if ($("#movie-check").prop("checked")) {
+      callMovie(killerSearchInput);
+    }
+    if ($("#book-check").prop("checked")) {
+      callBooks(killerSearchInput);
+    }
+    if ($("#tv-check").prop("checked")) {
+      callTv(killerSearchInput);
+    }
+  } else {
+    $("<div>")
+      .addClass("modal")
+      .attr("id", "modal1")
+      .html(
+        `<div class="modal-content"> <h5>You're killing me!</h5> <p>What are we even doing if you're not going to search for something?!</p> </div> <div class="modal-footer"> <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a> </div>`
+      )
+      .appendTo(".container");
+    // Got the following solution for making the modal appear from https://stackoverflow.com/questions/40430576/how-i-can-open-a-materialize-modal-when-a-window-is-ready. I wish I understood most of it.
+    const modalVar = document.getElementById("modal1");
+    const instance = M.Modal.init(modalVar, { dismissible: false });
+    instance.open();
   }
 });
