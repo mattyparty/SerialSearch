@@ -51,3 +51,13 @@ form {
 #favorites .card {
   border: 1px solid red;
 }
+/* for killer bio */
+#killer-bio {
+  width: 95%;
+  height: fit-content;
+}
+#killer-bio img {
+  float: left;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}

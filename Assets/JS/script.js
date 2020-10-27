@@ -11,6 +11,7 @@ function returnWikiData(killerName) {
     var responseKey = Object.keys(response.query.pages);
     var firstResponse = responseKey[0];
     var killerBio = response.query.pages[firstResponse].extract;
+
     $("#killer-bio").append(killerBio);
   });
 }
@@ -152,6 +153,8 @@ function switchScreen() {
   $("#header-img").remove();
   $("#favorites").remove();
   $("#header").addClass("left");
+  $("#killer-img").empty();
+  $("#killer-bio").empty();
 }
 
 function callTv(killerName) {
