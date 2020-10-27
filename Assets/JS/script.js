@@ -32,6 +32,31 @@ function returnWikiImage(killerName) {
     killerImg = response.query.pages[firstResponse].thumbnail.source;
     var killerHtmlTag = $("<img>");
     killerHtmlTag.attr("src", killerImg);
+    newKiller = { name: killerName, image: killerImg };
+    function alreadyFavorite(favArray) {
+      var killerCheck = true;
+      favArray.forEach(function (element) {
+        if (element.name === killerName) {
+          killerCheck = false;
+        }
+      });
+      return killerCheck;
+    }
+    var newFav = alreadyFavorite(favoriteKillers);
+    if (newFav) {
+      newKiller = { name: killerName, image: killerImg };
+      $("#fav-form")
+        .html(
+          '<a class="waves-effect waves-light btn red"><i class="material-icons left" id="favorite-icon">star_border</i>Favorite</a>'
+        )
+        .prependTo("#killer-bio");
+    } else {
+      $("#fav-form")
+        .html(
+          '<a class="waves-effect waves-light btn red"><i class="material-icons left" id="favorite-icon">star</i>Favorite</a>'
+        )
+        .prependTo("#killer-bio");
+    }
     $("#killer-bio").prepend(killerHtmlTag);
   });
 }
@@ -87,7 +112,6 @@ function callBooks(killerName) {
   }).then(function (response) {
     var row = $("<div>").addClass("row items-row");
     var responseArray = response.items;
-    console.log(responseArray);
     responseArray.forEach(function (element, index) {
       var cardInfo = "<p>Synopsis: " + element.volumeInfo.description + "</p>";
       // If no synopsis is provided, we just list the publisher info
@@ -127,6 +151,7 @@ function callBooks(killerName) {
 function switchScreen() {
   event.preventDefault();
   $("#header-img").remove();
+  $("#favorites").remove();
   $("#header").addClass("left");
   $("#killer-img").empty();
   $("#killer-bio").empty();
@@ -141,7 +166,6 @@ function callTv(killerName) {
     url: queryURL,
     method: "GET",
   }).then(function (data) {
-    console.log(data);
     var seriesRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
     for (var i = 0; i < responseArray.length; i++) {
@@ -158,7 +182,7 @@ function callTv(killerName) {
       }
       var cardReveal = $("<div>")
         .addClass("card-reveal")
-        .attr("id", "movie-reveal-" + i);
+        .attr("id", "tv-reveal-" + i);
       var cardTitle = $("<span>")
         .addClass("card-title grey-text text-darken-4")
         .text("" + responseArray[i].Title);
@@ -171,43 +195,50 @@ function callTv(killerName) {
       cardReveal.appendTo(card);
       card.appendTo(seriesRow);
     }
-    movieRow.appendTo("#tv");
+    seriesRow.appendTo("#tv");
   });
 }
-
+var favoriteKillers;
+var newKiller;
+var killerString = localStorage.getItem("Killers");
+console.log(killerString);
+if (killerString !== null && killerString !== "[]") {
+  var favoriteKillers = JSON.parse(killerString);
+  $("<h5>").text("Favorites:").appendTo("#favorites");
+  favoriteKillers.forEach(function (element) {
+    var favCard = $("<div>")
+      .addClass("card waves-effect waves-light z-depth-4 killer-card")
+      .val(element.name);
+    $("<img>")
+      .attr("src", element.image)
+      .attr("alt", "Image of " + element.name)
+      .appendTo(favCard);
+    $("<h6>").text(element.name).appendTo(favCard);
+    favCard.appendTo("#favorites");
+  });
+  // This else turns it into an empty array so that it can be pushed to in returnWikiImage
+} else {
+  favoriteKillers = [];
+}
 //On Buttion Click to run search functions
-$("#search-btn").on("click", function (event) {
-  event.preventDefault();
-
-  //set variable for what person the end user is searching for
-  var killerSearchInput = $("#search-bar").val().trim();
-  const str = killerSearchInput;
-  //Wiki doesnt like it when we dont capitlize the first word of the search this fixes that
-  function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-  const caps = str.split(" ").map(capitalize).join(" ");
-  killerSearchInput = caps;
-
-  ///clear elements
+function searchHandler(killerInput) {
   if (
     ($("#movie-check").prop("checked") ||
       $("#book-check").prop("checked") ||
       $("#tv-check").prop("checked")) &&
-    killerSearchInput !== ""
+    killerInput !== ""
   ) {
-    console.log($("search-bar").val);
     switchScreen();
-    returnWikiImage(killerSearchInput);
-    returnWikiData(killerSearchInput);
+    returnWikiImage(killerInput);
+    returnWikiData(killerInput);
     if ($("#movie-check").prop("checked")) {
-      callMovie(killerSearchInput);
+      callMovie(killerInput);
     }
     if ($("#book-check").prop("checked")) {
-      callBooks(killerSearchInput);
+      callBooks(killerInput);
     }
     if ($("#tv-check").prop("checked")) {
-      callTv(killerSearchInput);
+      callTv(killerInput);
     }
   } else {
     $("<div>")
@@ -222,4 +253,45 @@ $("#search-btn").on("click", function (event) {
     const instance = M.Modal.init(modalVar, { dismissible: false });
     instance.open();
   }
+}
+
+$("#search-btn").on("click", function (event) {
+  event.preventDefault();
+
+  //set variable for what person the end user is searching for
+  var killerSearchInput = $("#search-bar").val().trim();
+  const str = killerSearchInput;
+  //Wiki doesnt like it when we dont capitlize the first word of the search this fixes that
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  const caps = str.split(" ").map(capitalize).join(" ");
+  killerSearchInput = caps;
+  searchHandler(killerSearchInput);
+});
+$("#fav-form").on("click", function (event) {
+  event.preventDefault();
+  console.log($("#favorite-icon").text());
+  if ($("#favorite-icon").text() === "star_border") {
+    console.log("checked");
+    favoriteKillers.push(newKiller);
+    var saveInput = JSON.stringify(favoriteKillers);
+    localStorage.setItem("Killers", saveInput);
+    $("#favorite-icon").text("star");
+  } else {
+    console.log("not checked");
+    favoriteKillers.forEach(function (el, ind) {
+      if (el.name === newKiller.name) {
+        favoriteKillers.splice(ind, 1);
+        var saveInput = JSON.stringify(favoriteKillers);
+        localStorage.setItem("Killers", saveInput);
+        $("#favorite-icon").text("star_border");
+      }
+    });
+  }
+});
+$(".killer-card").on("click", function (event) {
+  event.preventDefault();
+  var favKiller = $(this).val();
+  searchHandler(favKiller);
 });

@@ -43,6 +43,14 @@ form {
   min-width: 150px;
   border-radius: 2px;
 }
+
+#favorites {
+  font-family: "Syne", monospace;
+}
+
+#favorites .card {
+  border: 1px solid red;
+}
 /* for killer bio */
 #killer-bio {
   width: 95%;
