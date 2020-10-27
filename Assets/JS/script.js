@@ -69,6 +69,7 @@ function callMovie(killerName) {
     url: queryURL,
     method: "GET",
   }).then(function (data) {
+    $("#movies").append("<h5>Movies about: " + killerName + "</h5>");
     var movieRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
     for (var i = 0; i < responseArray.length; i++) {
@@ -110,6 +111,7 @@ function callBooks(killerName) {
       "+subject",
     method: "GET",
   }).then(function (response) {
+    $("#books").append("<h5>Books about: " + killerName + "</h5>");
     var row = $("<div>").addClass("row items-row");
     var responseArray = response.items;
     responseArray.forEach(function (element, index) {
@@ -166,6 +168,7 @@ function callTv(killerName) {
     url: queryURL,
     method: "GET",
   }).then(function (data) {
+    $("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
     var seriesRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
     for (var i = 0; i < responseArray.length; i++) {
@@ -204,7 +207,10 @@ var killerString = localStorage.getItem("Killers");
 console.log(killerString);
 if (killerString !== null && killerString !== "[]") {
   var favoriteKillers = JSON.parse(killerString);
-  $("<h5>").addClass("col s12 red-text").text("Favorites:").appendTo("#favorites");
+  $("<h5>")
+    .addClass("col s12 red-text")
+    .text("Favorites:")
+    .appendTo("#favorites");
   favoriteKillers.forEach(function (element) {
     var favCard = $("<div>")
       .addClass("card waves-effect waves-light z-depth-4 killer-card")
