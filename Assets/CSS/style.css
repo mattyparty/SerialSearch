@@ -61,3 +61,18 @@ form {
   margin-bottom: 10px;
   margin-right: 10px;
 }
+
+#favorites-cards {
+  font-family: "Syne", monospace;
+  
+}
+
+#favorites-cards .card {
+  border: 1px solid red;
+}
+
+.favorites-row {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 20px;
+}

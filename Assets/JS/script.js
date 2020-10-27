@@ -204,7 +204,7 @@ var killerString = localStorage.getItem("Killers");
 console.log(killerString);
 if (killerString !== null && killerString !== "[]") {
   var favoriteKillers = JSON.parse(killerString);
-  $("<h5>").text("Favorites:").appendTo("#favorites");
+  $("<h5>").addClass("col s12 red-text").text("Favorites:").appendTo("#favorites");
   favoriteKillers.forEach(function (element) {
     var favCard = $("<div>")
       .addClass("card waves-effect waves-light z-depth-4 killer-card")
@@ -213,8 +213,8 @@ if (killerString !== null && killerString !== "[]") {
       .attr("src", element.image)
       .attr("alt", "Image of " + element.name)
       .appendTo(favCard);
-    $("<h6>").text(element.name).appendTo(favCard);
-    favCard.appendTo("#favorites");
+    $("<h6>").addClass("center").text(element.name).appendTo(favCard);
+    favCard.appendTo("#favorites-cards");
   });
   // This else turns it into an empty array so that it can be pushed to in returnWikiImage
 } else {
