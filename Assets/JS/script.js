@@ -31,33 +31,30 @@ function returnWikiImage(killerName) {
     killerImg = response.query.pages[firstResponse].thumbnail.source;
     var killerHtmlTag = $("<img>");
     killerHtmlTag.attr("src", killerImg);
-    // var favForm = $("<form>")
-    //   .attr("id", "fav-form")
-    //   .html(
-    //     '<p> <button> <input type="checkbox" class="star_border" /> <span>Favorite</span> </button> </p>'
-    //   );
 
     function alreadyFavorite(favArray) {
+      var killerCheck = true;
       favArray.forEach(function (element) {
         if (element.name === killerName) {
-          return false;
+          killerCheck = false;
         }
       });
-      return true;
+      return killerCheck;
     }
     var newFav = alreadyFavorite(favoriteKillers);
     if (newFav) {
-      favoriteKillers.push({ name: killerName, image: killerImg });
+      newKiller = { name: killerName, image: killerImg };
       $("#fav-form")
         .html(
-          '<p> <button type="submit"> <input type="checkbox" /> <span>Favorite</span> </button> </p>'
+          '<a class="waves-effect waves-light btn red"><i class="material-icons left" id="favorite-icon">star_border</i>Favorite</a>'
         )
         .prependTo("#killer-bio");
     } else {
-      $("#fav-form").html(
-        '<p> <button type="submit"> <input type="checkbox" checked="checked" /> <span>Favorite</span> </button> </p>'
-      );
-      preppendTo("#killer-bio");
+      $("#fav-form")
+        .html(
+          '<a class="waves-effect waves-light btn red"><i class="material-icons left" id="favorite-icon">star</i>Favorite</a>'
+        )
+        .prependTo("#killer-bio");
     }
     $("#killer-bio").prepend(killerHtmlTag);
   });
@@ -199,6 +196,7 @@ function callTv(killerName) {
   });
 }
 var favoriteKillers;
+var newKiller;
 var killerString = localStorage.getItem("Killers");
 if (killerString) {
   var favoriteKillers = JSON.parse(killerString);
@@ -219,37 +217,24 @@ if (killerString) {
   favoriteKillers = [];
 }
 //On Buttion Click to run search functions
-$("#search-btn").on("click", function (event) {
-  event.preventDefault();
-
-  //set variable for what person the end user is searching for
-  var killerSearchInput = $("#search-bar").val().trim();
-  const str = killerSearchInput;
-  //Wiki doesnt like it when we dont capitlize the first word of the search this fixes that
-  function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-  const caps = str.split(" ").map(capitalize).join(" ");
-  killerSearchInput = caps;
-
-  ///clear elements
+function searchHandler(killerInput) {
   if (
     ($("#movie-check").prop("checked") ||
       $("#book-check").prop("checked") ||
       $("#tv-check").prop("checked")) &&
-    killerSearchInput !== ""
+    killerInput !== ""
   ) {
     switchScreen();
-    returnWikiImage(killerSearchInput);
-    returnWikiData(killerSearchInput);
+    returnWikiImage(killerInput);
+    returnWikiData(killerInput);
     if ($("#movie-check").prop("checked")) {
-      callMovie(killerSearchInput);
+      callMovie(killerInput);
     }
     if ($("#book-check").prop("checked")) {
-      callBooks(killerSearchInput);
+      callBooks(killerInput);
     }
     if ($("#tv-check").prop("checked")) {
-      callTv(killerSearchInput);
+      callTv(killerInput);
     }
   } else {
     $("<div>")
@@ -264,9 +249,45 @@ $("#search-btn").on("click", function (event) {
     const instance = M.Modal.init(modalVar, { dismissible: false });
     instance.open();
   }
-});
-$("#fav-form").on("submit", function (event) {
+}
+
+$("#search-btn").on("click", function (event) {
   event.preventDefault();
-  var saveInput = JSON.stringify(favoriteKillers);
-  localStorage.setItem("Killers", saveInput);
+
+  //set variable for what person the end user is searching for
+  var killerSearchInput = $("#search-bar").val().trim();
+  const str = killerSearchInput;
+  //Wiki doesnt like it when we dont capitlize the first word of the search this fixes that
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  const caps = str.split(" ").map(capitalize).join(" ");
+  killerSearchInput = caps;
+  searchHandler(killerSearchInput);
+});
+$("#fav-form").on("click", function (event) {
+  event.preventDefault();
+  console.log($("#favorite-icon").text());
+  if ($("#favorite-icon").text() === "star_border") {
+    console.log("checked");
+    favoriteKillers.push(newKiller);
+    var saveInput = JSON.stringify(favoriteKillers);
+    localStorage.setItem("Killers", saveInput);
+    $("#favorite-icon").text("star");
+  } else {
+    console.log("not checked");
+    favoriteKillers.forEach(function (el, ind) {
+      if (el.name === newKiller.name) {
+        favoriteKillers.splice(ind, 1);
+        var saveInput = JSON.stringify(favoriteKillers);
+        localStorage.setItem("Killers", saveInput);
+        $("#favorite-icon").text("star_border");
+      }
+    });
+  }
+});
+$(".killer-card").on("click", function (event) {
+  event.preventDefault();
+  var favKiller = $(this).val();
+  searchHandler(favKiller);
 });
