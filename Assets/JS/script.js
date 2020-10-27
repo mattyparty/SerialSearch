@@ -31,7 +31,7 @@ function returnWikiImage(killerName) {
     killerImg = response.query.pages[firstResponse].thumbnail.source;
     var killerHtmlTag = $("<img>");
     killerHtmlTag.attr("src", killerImg);
-
+    newKiller = { name: killerName, image: killerImg };
     function alreadyFavorite(favArray) {
       var killerCheck = true;
       favArray.forEach(function (element) {
@@ -198,7 +198,8 @@ function callTv(killerName) {
 var favoriteKillers;
 var newKiller;
 var killerString = localStorage.getItem("Killers");
-if (killerString) {
+console.log(killerString);
+if (killerString !== null && killerString !== "[]") {
   var favoriteKillers = JSON.parse(killerString);
   $("<h5>").text("Favorites:").appendTo("#favorites");
   favoriteKillers.forEach(function (element) {
