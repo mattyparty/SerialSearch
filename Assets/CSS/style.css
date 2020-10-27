@@ -43,13 +43,13 @@ form {
   min-width: 150px;
   border-radius: 2px;
 }
-/* trying to use CSS to have the image float right and p float left */
+/* for killer bio */
 #killer-bio {
-  float: right;
-  margin: 10px;
+  width: 95%;
+  height: fit-content;
 }
-
-#killer-img {
+#killer-bio img {
   float: left;
-  margin: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
 }

@@ -32,7 +32,7 @@ function returnWikiImage(killerName) {
     killerImg = response.query.pages[firstResponse].thumbnail.source;
     var killerHtmlTag = $("<img>");
     killerHtmlTag.attr("src", killerImg);
-    $("#killer-img").prepend(killerHtmlTag);
+    $("#killer-bio").prepend(killerHtmlTag);
   });
 }
 function callMovie(killerName) {
