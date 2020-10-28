@@ -153,7 +153,7 @@ function callBooks(killerName) {
 function switchScreen() {
   event.preventDefault();
   $("#header-img").remove();
-  $("#favorites").remove();
+
   $("#header").addClass("left");
   $("#killer-img").empty();
   $("#killer-bio").empty();
@@ -171,38 +171,43 @@ function callTv(killerName) {
     url: queryURL,
     method: "GET",
   }).then(function (data) {
-    $("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
+    //$("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
     var seriesRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
-
-    for (var i = 0; i < responseArray.length; i++) {
-      var card = $("<div>").addClass("card");
-      var imageDiv = $("<div>").addClass(
-        "poster card-image waves-effect waves-block waves-light"
-      );
-      var img = $("<img>")
-        .addClass("activator")
-        .attr("src", responseArray[i].Poster + "/400/200")
-        .attr("alt", responseArray[i].Title);
-      if (responseArray[i].Poster === "N/A") {
-        img.attr("src", "./assets/images/2297419_orig.jpg");
+    //console.log(data);
+    if (!data.response) {
+      $("#tv").append("<h5>No Tv Programs Found</h5>");
+    } else {
+      $("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
+      for (var i = 0; i < responseArray.length; i++) {
+        var card = $("<div>").addClass("card");
+        var imageDiv = $("<div>").addClass(
+          "poster card-image waves-effect waves-block waves-light"
+        );
+        var img = $("<img>")
+          .addClass("activator")
+          .attr("src", responseArray[i].Poster + "/400/200")
+          .attr("alt", responseArray[i].Title);
+        if (responseArray[i].Poster === "N/A") {
+          img.attr("src", "./assets/images/2297419_orig.jpg");
+        }
+        var cardReveal = $("<div>")
+          .addClass("card-reveal")
+          .attr("id", "tv-reveal-" + i);
+        var cardTitle = $("<span>")
+          .addClass("card-title grey-text text-darken-4")
+          .text("" + responseArray[i].Title);
+        $("<i>")
+          .addClass("material-icons right")
+          .text("close")
+          .appendTo(cardTitle);
+        cardTitle.appendTo(cardReveal);
+        imageDiv.append(img).appendTo(card);
+        cardReveal.appendTo(card);
+        card.appendTo(seriesRow);
       }
-      var cardReveal = $("<div>")
-        .addClass("card-reveal")
-        .attr("id", "tv-reveal-" + i);
-      var cardTitle = $("<span>")
-        .addClass("card-title grey-text text-darken-4")
-        .text("" + responseArray[i].Title);
-      $("<i>")
-        .addClass("material-icons right")
-        .text("close")
-        .appendTo(cardTitle);
-      cardTitle.appendTo(cardReveal);
-      imageDiv.append(img).appendTo(card);
-      cardReveal.appendTo(card);
-      card.appendTo(seriesRow);
+      seriesRow.appendTo("#tv");
     }
-    seriesRow.appendTo("#tv");
   });
 }
 var favoriteKillers;
