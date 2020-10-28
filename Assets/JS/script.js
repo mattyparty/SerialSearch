@@ -153,7 +153,6 @@ function callBooks(killerName) {
 function switchScreen() {
   event.preventDefault();
   $("#header-img").remove();
-
   $("#header").addClass("left");
   $("#killer-img").empty();
   $("#killer-bio").empty();
@@ -171,14 +170,15 @@ function callTv(killerName) {
     url: queryURL,
     method: "GET",
   }).then(function (data) {
-    //$("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
+    $("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
     var seriesRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
     //console.log(data);
     if (!data.response) {
-      $("#tv").append("<h5>No Tv Programs Found</h5>");
+      $("#tv").append("<img>");
+      $("<img>");
     } else {
-      $("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
+      //$("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
       for (var i = 0; i < responseArray.length; i++) {
         var card = $("<div>").addClass("card");
         var imageDiv = $("<div>").addClass(
