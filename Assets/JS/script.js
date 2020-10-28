@@ -158,6 +158,9 @@ function switchScreen() {
   $("#header").addClass("left");
   $("#killer-img").empty();
   $("#killer-bio").empty();
+  $("#books").empty();
+  $("#movies").empty();
+  $("#tv").empty();
 }
 
 function callTv(killerName) {
@@ -172,7 +175,6 @@ function callTv(killerName) {
     $("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
     var seriesRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
-    console.log(responseArray);
     for (var i = 0; i < responseArray.length; i++) {
       var card = $("<div>").addClass("card");
       var imageDiv = $("<div>").addClass(
@@ -206,7 +208,7 @@ function callTv(killerName) {
 var favoriteKillers;
 var newKiller;
 var killerString = localStorage.getItem("Killers");
-console.log(killerString);
+
 if (killerString !== null && killerString !== "[]") {
   var favoriteKillers = JSON.parse(killerString);
   $("<h5>")
@@ -279,7 +281,7 @@ $("#search-btn").on("click", function (event) {
 });
 $(document).on("click", "#fav-form", function (event) {
   event.preventDefault();
-  console.log($("#favorite-icon").text());
+
   if ($("#favorite-icon").text() === "star_border") {
     favoriteKillers.push(newKiller);
     var saveInput = JSON.stringify(favoriteKillers);
@@ -299,5 +301,11 @@ $(document).on("click", "#fav-form", function (event) {
 $(".killer-card").on("click", function (event) {
   event.preventDefault();
   var favKiller = $(this).val();
-  searchHandler(favKiller);
+  //searchHandler(favKiller);
+  switchScreen();
+  returnWikiImage(favKiller);
+  returnWikiData(favKiller);
+  callTv(favKiller);
+  callBooks(favKiller);
+  callMovie(favKiller);
 });
