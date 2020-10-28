@@ -36,8 +36,8 @@ SO THAT I can spend countless nights unable sleep.
 
 ## Links
 
-#### Project repository: https://github.com/Henryrjung/SerialSearch
-#### Deployed website: https://henryrjung.github.io/SerialSearch/
+#### Project repository: https://github.com/mattyparty/SerialSearch
+#### Deployed website: http://pewewardy.com/SerialSearch/
 
 ## Screenshots
 #### Initial search screen
