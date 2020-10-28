@@ -75,3 +75,8 @@ form {
   flex-flow: row wrap;
   padding: 20px;
 }
+
+h5 {
+  font-family: 'Syne', sans-serif;
+  color: red;
+}
