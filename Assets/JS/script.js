@@ -157,6 +157,9 @@ function switchScreen() {
   $("#header").addClass("left");
   $("#killer-img").empty();
   $("#killer-bio").empty();
+  $("#books").empty();
+  $("#movies").empty();
+  $("#tv").empty();
 }
 
 function callTv(killerName) {
@@ -171,6 +174,7 @@ function callTv(killerName) {
     $("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
     var seriesRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
+
     for (var i = 0; i < responseArray.length; i++) {
       var card = $("<div>").addClass("card");
       var imageDiv = $("<div>").addClass(
@@ -204,7 +208,7 @@ function callTv(killerName) {
 var favoriteKillers;
 var newKiller;
 var killerString = localStorage.getItem("Killers");
-console.log(killerString);
+
 if (killerString !== null && killerString !== "[]") {
   var favoriteKillers = JSON.parse(killerString);
   $("<h5>")
@@ -277,15 +281,13 @@ $("#search-btn").on("click", function (event) {
 });
 $("#fav-form").on("click", function (event) {
   event.preventDefault();
-  console.log($("#favorite-icon").text());
+
   if ($("#favorite-icon").text() === "star_border") {
-    console.log("checked");
     favoriteKillers.push(newKiller);
     var saveInput = JSON.stringify(favoriteKillers);
     localStorage.setItem("Killers", saveInput);
     $("#favorite-icon").text("star");
   } else {
-    console.log("not checked");
     favoriteKillers.forEach(function (el, ind) {
       if (el.name === newKiller.name) {
         favoriteKillers.splice(ind, 1);
@@ -299,5 +301,11 @@ $("#fav-form").on("click", function (event) {
 $(".killer-card").on("click", function (event) {
   event.preventDefault();
   var favKiller = $(this).val();
-  searchHandler(favKiller);
+  //searchHandler(favKiller);
+  switchScreen();
+  returnWikiImage(favKiller);
+  returnWikiData(favKiller);
+  callTv(favKiller);
+  callBooks(favKiller);
+  callMovie(favKiller);
 });
