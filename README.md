@@ -1,14 +1,17 @@
 # Project 1: SerialSearch
 
+Users are smart, they know how to "google" something, but there value with having all relevant media (Books, Movies, TV) all in one place with a simple and concise interface.
+
 ## Description
 
 This website provides users with a simple tool to find information/entertainment related to their favorite serial killers. Using the OMDB API, and WIKI API, we were able to create a website capable of finding all available Movies, TV, and Books on an killer of the users choosing, with the help of materialize and JQUERY, we were able to create a dynamic fully functional MVP that meets all of the projects acceptance criteria. 
 
 ## User Story 
 
-AS A individual with nothing to do
-I WANT to be able to find data on my favorite serial killers
-SO THAT I can spend countless nights unable sleep
+AS A individual with nothing to do.
+I WANT to be able to find data on my favorite serial killers.
+SO THAT I can spend countless nights unable sleep.
+
 
 ## Application Requirements
 
@@ -45,6 +48,18 @@ SO THAT I can spend countless nights unable sleep
 
 ![Image 1](./assets/images/searched_killer.PNG)
 
+#### Favorites page
+
+![Image 1](./assets/images/favorites_page.PNG)
+
+## Roadmap
+
+* Geo location of murder victims.
+* Number indicating total active serial killers.
+* Narrowing search parameters to serial killers exclusively.
+* Indications of what platforms/services material found can be viewed on.
+* User ratings/recommendations.
+
 ## Credits
 
 ### contributors
@@ -55,12 +70,13 @@ SO THAT I can spend countless nights unable sleep
 
 * TA Travis Morris
 
-### Sources
+### Technologies User
 
-* Materialize 
-* JQuery
+* Materialize(CSS Framework)
+* JQuery/JavaScript
 * OMDB API (for Movies and TV)
 * WIKI API (to fetch a short bio and picture of each individual profile)
+* Moment.js
 
 
 
