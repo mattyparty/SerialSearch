@@ -56,7 +56,6 @@ function returnWikiImage(killerName) {
           '<a class="waves-effect waves-light btn red"><i class="material-icons left" id="favorite-icon">star</i>Favorite</a>'
         )
         .prependTo("#killer-bio");
-      console.log("favorite");
     }
     $("#killer-bio").prepend(killerHtmlTag);
   });
@@ -71,7 +70,8 @@ function callMovie(killerName) {
     method: "GET",
   }).then(function (data) {
     $("#movies").append("<h5>Movies about: " + killerName + "</h5>");
-    if (!data.response) {
+
+    if (data.Response == "False") {
       $("<img class='not-found'>")
         .attr("src", "./Assets/Images/no_info_found.png")
         .appendTo("#movies");
@@ -182,7 +182,7 @@ function callTv(killerName) {
     var seriesRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
 
-    if (!data.response) {
+    if (data.Response == "False") {
       $("<img class='not-found'>")
         .attr("src", "./Assets/Images/no_info_found.png")
         .appendTo("#tv");
