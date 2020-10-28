@@ -40,7 +40,7 @@ SO THAT I can spend countless nights unable sleep.
 #### Deployed website: https://henryrjung.github.io/SerialSearch/
 
 ## Screenshots
-#### Initial screen prompting user to search
+#### Initial search screen
 
 ![Image 1](./assets/images/search_screen.PNG)
 
