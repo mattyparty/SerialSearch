@@ -26,8 +26,8 @@ form {
 .items-row {
   display: flex;
   flex-flow: row wrap;
-  padding: 20px;
-  justify-content: space-between;
+  padding: 8px;
+  /* justify-content: space-between; */
 }
 
 .card {
@@ -37,10 +37,10 @@ form {
 }
 
 .poster {
-  max-height: 250px;
-  height: 250px;
-  width: 100px;
-  min-width: 150px;
+  max-height: 350px;
+  height: 350px;
+  width: 200px;
+  min-width: 200px;
   border-radius: 2px;
 }
 
@@ -73,10 +73,11 @@ form {
 .favorites-row {
   display: flex;
   flex-flow: row wrap;
-  padding: 20px;
+  padding: 8px;
+  margin-left: 10px;
 }
 
 h5 {
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   color: red;
 }
