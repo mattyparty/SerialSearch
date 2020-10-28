@@ -45,17 +45,18 @@ function returnWikiImage(killerName) {
     var newFav = alreadyFavorite(favoriteKillers);
     if (newFav) {
       newKiller = { name: killerName, image: killerImg };
-      $("#fav-form")
+      $("<form id='fav-form'>")
         .html(
           '<a class="waves-effect waves-light btn red"><i class="material-icons left" id="favorite-icon">star_border</i>Favorite</a>'
         )
         .prependTo("#killer-bio");
     } else {
-      $("#fav-form")
+      $("<form id='fav-form'>")
         .html(
           '<a class="waves-effect waves-light btn red"><i class="material-icons left" id="favorite-icon">star</i>Favorite</a>'
         )
         .prependTo("#killer-bio");
+      console.log("favorite");
     }
     $("#killer-bio").prepend(killerHtmlTag);
   });
@@ -171,6 +172,7 @@ function callTv(killerName) {
     $("#tv").append("<h5>TV Programs about: " + killerName + "</h5>");
     var seriesRow = $("<div>").addClass("row items-row");
     var responseArray = data.Search;
+    console.log(responseArray);
     for (var i = 0; i < responseArray.length; i++) {
       var card = $("<div>").addClass("card");
       var imageDiv = $("<div>").addClass(
@@ -275,17 +277,15 @@ $("#search-btn").on("click", function (event) {
   killerSearchInput = caps;
   searchHandler(killerSearchInput);
 });
-$("#fav-form").on("click", function (event) {
+$(document).on("click", "#fav-form", function (event) {
   event.preventDefault();
   console.log($("#favorite-icon").text());
   if ($("#favorite-icon").text() === "star_border") {
-    console.log("checked");
     favoriteKillers.push(newKiller);
     var saveInput = JSON.stringify(favoriteKillers);
     localStorage.setItem("Killers", saveInput);
     $("#favorite-icon").text("star");
   } else {
-    console.log("not checked");
     favoriteKillers.forEach(function (el, ind) {
       if (el.name === newKiller.name) {
         favoriteKillers.splice(ind, 1);
