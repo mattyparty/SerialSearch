@@ -45,17 +45,18 @@ function returnWikiImage(killerName) {
     var newFav = alreadyFavorite(favoriteKillers);
     if (newFav) {
       newKiller = { name: killerName, image: killerImg };
-      $("#fav-form")
+      $("<form id='fav-form'>")
         .html(
           '<a class="waves-effect waves-light btn red"><i class="material-icons left" id="favorite-icon">star_border</i>Favorite</a>'
         )
         .prependTo("#killer-bio");
     } else {
-      $("#fav-form")
+      $("<form id='fav-form'>")
         .html(
           '<a class="waves-effect waves-light btn red"><i class="material-icons left" id="favorite-icon">star</i>Favorite</a>'
         )
         .prependTo("#killer-bio");
+      console.log("favorite");
     }
     $("#killer-bio").prepend(killerHtmlTag);
   });
@@ -291,7 +292,7 @@ $("#search-btn").on("click", function (event) {
   killerSearchInput = caps;
   searchHandler(killerSearchInput);
 });
-$("#fav-form").on("click", function (event) {
+$(document).on("click", "#fav-form", function (event) {
   event.preventDefault();
 
   if ($("#favorite-icon").text() === "star_border") {
