@@ -1,0 +1,86 @@
+.background {
+  background-color: #090909;
+}
+
+#header {
+  font-family: "Syne Mono", monospace;
+}
+
+form {
+  font-family: "Syne", sans-serif;
+}
+
+#search-form label {
+  color: #000;
+}
+
+#search-form input[type="text"]:focus + label {
+  color: #000;
+}
+
+#search-form input[type="text"]:focus {
+  border-bottom: 1px solid red;
+  box-shadow: 0 1px 0 0 #000;
+}
+
+.items-row {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 8px;
+  /* justify-content: space-between; */
+}
+
+.card {
+  margin: 10px;
+  max-height: 400px;
+  max-width: 200px;
+}
+
+.poster {
+  max-height: 350px;
+  height: 350px;
+  width: 200px;
+  min-width: 200px;
+  border-radius: 2px;
+}
+
+#favorites {
+  font-family: "Syne", monospace;
+}
+
+#favorites .card {
+  border: 1px solid red;
+}
+/* for killer bio */
+#killer-bio {
+  width: 95%;
+  height: fit-content;
+}
+#killer-bio img {
+  float: left;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+#favorites-cards {
+  font-family: "Syne", monospace;
+}
+
+#favorites-cards .card {
+  border: 1px solid red;
+}
+
+.favorites-row {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 8px;
+  margin-left: 10px;
+}
+
+h5 {
+  font-family: "Syne", sans-serif;
+  color: red;
+}
+.not-found {
+  width: 400px;
+}

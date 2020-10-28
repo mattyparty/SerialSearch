@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>$erial.search</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne&family=Syne+Mono&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./Assets/CSS/style.css" />
+  </head>
+
+  <body class="background">
+    <nav class="navbar-fixed grey black">
+      <a href="./index.html" class="brand-logo center" id="header"
+        >$erial.search</a
+      >
+      <span id="nav-search"></span>
+    </nav>
+
+    <div>
+      <main class="container white" id="clear">
+        <div class="row">
+          <div class="col s12 center-align" id="header-img">
+            <br />
+            <img
+              src="Assets/Images/serial_search_header.jpg"
+              class="responsive-img"
+              id="img"
+            />
+          </div>
+
+          <div class="col s12 m6 offset-m3" id="search-form">
+            <form class="center-align" id="search-form">
+              <input
+                type="text"
+                id="search-bar"
+                class="validate input-field"
+                placeholder="Search Here..."
+              />
+              <br />
+              <label for="book-check" class="col s4 m4">
+                <input
+                  type="checkbox"
+                  id="book-check"
+                  name="check-media"
+                  value="book"
+                />
+                <span>Books</span>
+              </label>
+              <label for="movie-check" class="col s4 m4">
+                <input
+                  type="checkbox"
+                  id="movie-check"
+                  name="check-media"
+                  value="movie"
+                />
+                <span>Movies</span>
+              </label>
+              <label for="tv-check" class="col s4 m4">
+                <input
+                  type="checkbox"
+                  id="tv-check"
+                  name="check-media"
+                  value="tv"
+                />
+                <span>TV</span>
+              </label>
+              <br /><br />
+              <!-- added ID to button - mlp -->
+              <button
+                class="btn waves-effect red hoverable"
+                type="submit"
+                id="search-btn"
+              >
+                Search
+              </button>
+            </form>
+            <br /><br /><br />
+          </div>
+          <!-- Killer Bio and Image -->
+          <div class="col s12 m12">
+            <div id="killer-bio"></div>
+          </div>
+          <!-- Killer Bio and Image -->
+          <div class="col s12 m12" id="books"></div>
+          <div class="col s12 m12" id="movies"></div>
+          <div class="col s12 m12" id="tv"></div>
+        </div>
+        <hr />
+        <div class="row favorites-row" id="favorites"></div>
+        <div class="row favorites-row" id="favorites-cards"></div>
+      </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+          
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+    <script src="./Assets/JS/script.js"></script>
+     
+  </body>
+</html>
